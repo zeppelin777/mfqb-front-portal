@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.el-breadcrumb {
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+.el-dialog__header {
+  background-color: #3296fa;
+  .el-dialog__title,
+  .el-dialog__close {
+    color: #fff;
+  }
+}
+
+.el-dialog__footer {
+  text-align: center;
+}
+
+::-webkit-scrollbar{ /*滚动条整体样式*/
+  width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 10px;
+}
+::-webkit-scrollbar-thumb{ /*滚动条里面小方块*/
+  border-radius: 5px;
+  background: #cfcbcb;
+}
+::-webkit-scrollbar-track{ /*滚动条里面轨道*/
+  border-radius: 6px;
+  background: #ededed;
+}
+
+/* 鼠标悬停放大滚动条 */
+::-webkit-scrollbar-thumb:hover {
+  background: #999; /* 滚动条的颜色 */
+  width: 20px; /* 鼠标悬停时垂直滚动条的宽度 */
+  height: 20px; /* 鼠标悬停时水平滚动条的高度 */
+}
