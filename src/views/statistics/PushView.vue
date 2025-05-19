@@ -261,8 +261,8 @@ export default {
             pushTotalNum: base.pushTotalNum + h5.pushTotalNum,
             successNum: base.successNum + h5.successNum,
             failureNum: base.failureNum + h5.failureNum,
-            totalProductPrice: base.totalProductPrice + h5.totalProductPrice,
-            successRate: ((base.successNum + h5.successNum) / (base.pushTotalNum + h5.pushTotalNum) * 100).toFixed(2)
+            totalProductPrice: (parseFloat(base.totalProductPrice) + parseFloat(h5.totalProductPrice)).toFixed(2).replace(/\.?0+$/, ''),
+            successRate: ((base.successNum + h5.successNum) / (base.pushTotalNum + h5.pushTotalNum) * 100).toFixed(0)
           };
           result.push(totalRecord);
         }
