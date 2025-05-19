@@ -135,9 +135,10 @@
 </template>
 
 <script>
-import { list, download } from '@/api/pushStatistics'
+import { download, list } from '@/api/pushStatistics'
 import ChannelStatiscsByPushDialog from './dialog/channel-statiscs-by-push'
 import ImpactDepotStatiscsDialog from './dialog/Impact-depot-statiscs'
+
 export default {
   name: 'PushStatistics',
   components: {
@@ -202,12 +203,72 @@ export default {
       return Number.isInteger(ratio)?ratio: ratio.toFixed(2)
     },
     async getTableList() {
-      const res = await list(this.queryInfo)
+      const res = await list(this.queryInfo);
       if (res.code === 200) {
-        this.total = res.data.total
-
-        this.tableData = res.data.records
+        this.total = res.data.total;
+        this.tableData = this.processRecords(res.data.records);
       }
+    },
+
+    processRecords(records) {
+      const result = [];
+      const codeMap = {};
+
+      // 遍历 records，按 platformCode 分组
+      records.forEach(record => {
+        if (!codeMap[record.platformCode]) {
+          codeMap[record.platformCode] = {
+            base: null, // 基础数据
+            h5: null,   // 带 (H5) 的数据
+            total: null // 带 (总) 的数据
+          };
+        }
+
+        const group = codeMap[record.platformCode];
+
+        if (record.platformName.endsWith('(h5)')) {
+          group.h5 = record; // 存储带 (H5) 的数据
+        } else {
+          group.base = record; // 存储基础数据
+        }
+      });
+
+      // 生成最终的三行数据
+      for (const key in codeMap) {
+        const group = codeMap[key];
+        const base = group.base;
+        const h5 = group.h5;
+// 打印 h5 的值
+        console.log('h5:', h5);
+        console.log('base:', base);
+
+
+        // 基础数据
+        if (base) {
+          result.push({ ...base });
+        }
+
+        // 带 (H5) 的数据
+        if (h5) {
+          result.push({ ...h5 });
+        }
+
+        // 带 (总) 的数据
+        if (base && h5) {
+          const totalRecord = {
+            ...base,
+            platformName: base.platformName + '(总)',
+            pushTotalNum: base.pushTotalNum + h5.pushTotalNum,
+            successNum: base.successNum + h5.successNum,
+            failureNum: base.failureNum + h5.failureNum,
+            totalProductPrice: base.totalProductPrice + h5.totalProductPrice,
+            successRate: ((base.successNum + h5.successNum) / (base.pushTotalNum + h5.pushTotalNum) * 100).toFixed(2)
+          };
+          result.push(totalRecord);
+        }
+      }
+
+      return result;
     },
     confirmDate(value) {
       if (value) {
