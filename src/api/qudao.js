@@ -29,6 +29,14 @@ export const chanpinUpdatePlat = (params) => {
   })
 }
 
+export const chargeBalance = (params) => {
+  return request({
+    method: 'GET',
+    url: '/pushStatistics/chargeBalance',
+    params: params
+  })
+}
+
 export const updateFlag = (params) => {
   return request({
     method:'GET',

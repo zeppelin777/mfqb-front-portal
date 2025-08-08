@@ -73,6 +73,12 @@
         <!-- <el-table-column prop="priority" label="优先级" align="center" /> -->
         <el-table-column prop="zkUrl" label="撞库地址" align="center" />
         <el-table-column prop="jjUrl" label="进件地址" align="center" />
+        <el-table-column label="余额" align="center" width="80">
+          <template slot-scope="{ row }">
+            {{ (row.balance || 0) - (row.cost || 0) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="dailyLimit" label="每日限额" align="center" width="80" />
         <el-table-column prop="price" label="单价" align="center" width="80" />
         <el-table-column prop="uvNum" label="uv" align="center" width="80" />
         <el-table-column prop="totalPrice" label="产品总产值" align="center" width="80" />
@@ -126,6 +132,14 @@
                 @click="openSwitchInfo(scope.row)"
                 >查看开关信息</el-button
               >
+
+              <el-button
+                style="margin-top: 10px; margin-left: 0"
+                type="primary"
+                @click="chargeMoney(scope.row)"
+              >充值</el-button
+              >
+
               <el-popconfirm
                 title="确认删除吗？"
                 icon-color="red"
@@ -162,6 +176,20 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="cancelDialog">取 消</el-button>
         <el-button type="primary" @click="submitDialog">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="充值" :visible.sync="chargeFormVisible" width="30%">
+      <div style="display: flex; justify-content: center;">
+        <el-form :model="form" inline>
+          <el-form-item label="金额">
+            <el-input v-model="form.money"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelChargeMoney">取 消</el-button>
+        <el-button type="primary" @click="submitCharge">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -254,6 +282,9 @@
           <el-form-item prop="percent" label="分成比例">
             <el-input v-model="addInfo.percent" />
           </el-form-item>
+          <el-form-item prop="dailyLimit" label="每日限额">
+            <el-input v-model="addInfo.dailyLimit" />
+          </el-form-item>
         </el-form>
       </div>
       <template #footer>
@@ -276,7 +307,7 @@ import {
   updateFlag,
   deleteChanpin,
   addChanpinTo,
-  updateChanpinTo
+  updateChanpinTo, chargeBalance
 } from '@/api/qudao'
 import ChanpinSwitchInfo from './dialog/chanpin-switch-info.vue'
 export default {
@@ -302,9 +333,11 @@ export default {
         endTime: ''
       },
       form: {
-        priority: ''
+        priority: '',
+        money: ''
       },
       dialogFormVisible: false,
+      chargeFormVisible: false,
       changeRow: {},
       showSwitchInfo: false,
       switchInfo: {
@@ -341,7 +374,8 @@ export default {
         price: '',
         priceState: '',
         model: '',
-        percent: ''
+        percent: '',
+        dailyLimit: -1
       },
       addShow: false
     }
@@ -401,7 +435,8 @@ export default {
           price: this.addInfo.price,
           priceState: this.addInfo.priceState,
           model: this.addInfo.model,
-          percent: this.addInfo.percent
+          percent: this.addInfo.percent,
+          dailyLimit: this.addInfo.dailyLimit
         }
         const res = await updateChanpinTo(updateInfo)
         if (res.code === 200) {
@@ -453,6 +488,27 @@ export default {
         this.changeRow = {}
       }
     },
+    async submitCharge() {
+      if (this.form.money == '') {
+        this.$message.error('请输入金额')
+        return
+      }
+      let params = {
+        id: this.changeRow.id,
+        ...this.form
+      }
+      const res = await chargeBalance(params)
+      console.log(res)
+      if (res.code == 200) {
+        this.$message.success('修改成功')
+        this.getTableList()
+        this.chargeFormVisible = false
+        this.form = {
+          money: ''
+        }
+        this.changeRow = {}
+      }
+    },
     cancelDialog() {
       this.dialogFormVisible = false
       this.changeRow = {}
@@ -462,6 +518,17 @@ export default {
       this.addInfo = row
       // this.dialogFormVisible = true
       this.addShow = true
+    },
+    chargeMoney(row) {
+      this.chargeFormVisible = true
+      this.changeRow = row
+    },
+    cancelChargeMoney() {
+      this.chargeFormVisible = false
+      this.form = {
+        money: ''
+      }
+      this.changeRow = {}
     },
     confirmDate(value) {
       if (value) {
