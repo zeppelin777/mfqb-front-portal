@@ -301,7 +301,12 @@ export default {
     },
     showImpactDepotStatiscs(row) {
         // console.log(row.platformName.split('(')[0]);
-        this.platformName = row.platformName.split('(')[0]
+      // 如果平台名称以"(掩码)"结尾，则不进行split操作
+        if (row.platformName.endsWith('(掩码)')) {
+          this.platformName = row.platformName;
+        } else {
+          this.platformName = row.platformName.split('(')[0];
+        }
         this.channelStatiscsQuery.startTime = this.queryInfo.startTime
         this.channelStatiscsQuery.endTime = this.queryInfo.endTime
         this.isImpactDepotStatiscsVisible = true
