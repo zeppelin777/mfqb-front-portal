@@ -75,7 +75,7 @@
         <el-table-column prop="jjUrl" label="进件地址" align="center" />
         <el-table-column label="余额" align="center" width="80">
           <template slot-scope="{ row }">
-            {{ (row.balance || 0) - (row.cost || 0) }}
+            {{ parseFloat(((row.balance || 0) - (row.cost || 0)).toFixed(2)) }}
           </template>
         </el-table-column>
         <el-table-column prop="dailyLimit" label="每日限额" align="center" width="80" />
