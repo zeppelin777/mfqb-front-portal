@@ -84,6 +84,13 @@ export const fetchChannelCheckPercent = (params) => {
     params:params
   })
 }
+// RESTful风格：更新单个渠道的日推送最大量（路径参数）
+export const updateSwitchChannelLimitById = (id, dayChannelLimit) => {
+  return request({
+    method: 'GET',
+    url: `/channel/updateSwitchChannelLimitById/${id}/${dayChannelLimit}`
+  })
+}
 
 
 

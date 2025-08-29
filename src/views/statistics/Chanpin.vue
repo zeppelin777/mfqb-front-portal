@@ -195,7 +195,7 @@
 
     <ChanpinSwitchInfo
       :isVisible.sync="showSwitchInfo"
-      :platformId="switchInfo.platformId"
+      :platformId="String(switchInfo.platformId)"
       :platformName="switchInfo.platformName"
     />
 
