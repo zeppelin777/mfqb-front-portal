@@ -63,6 +63,10 @@ export default {
     {
       path: 'strikeDetail',
       component: () => import('@/views/statistics/StrikeDetail')
+    },
+    {
+      path:'applicationLog',
+      component: () => import('@/views/statistics/ApplicationLog')
     }
   ]
 }
