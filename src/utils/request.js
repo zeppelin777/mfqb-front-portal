@@ -38,6 +38,11 @@ request.interceptors.response.use((res) => {
     // 用于下载
     return res
   }
+  if(res.request.responseType === 'blob') {
+    // 用于下载
+    return res
+  }
+
   if (res.config.url.startsWith('http')) {
     return res.data
   }

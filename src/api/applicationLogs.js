@@ -8,3 +8,13 @@ export const queryLogsByCondition = (data) => {
     data
   })
 }
+
+// 上传excel并下载文件
+export const uploadExcelAndDownFile = (formData) => {
+  return request({
+    url: '/applicationLog/uploadExcelAndDownFile',
+    method: 'POST',
+    data: formData,
+    responseType: 'blob'
+  });
+}
