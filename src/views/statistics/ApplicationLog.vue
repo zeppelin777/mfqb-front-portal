@@ -75,13 +75,13 @@
 
     <el-card class="table-box">
       <el-table border stripe :data="tableData">
-        <el-table-column prop="platformCode" label="平台代码" align="center" />
-        <el-table-column prop="platformName" label="平台代码" align="center" />
         <el-table-column prop="md5Phone" label="手机号(MD5)" align="center" />
-        <el-table-column prop="channelPrice" label="渠道价" align="center" />
+        <el-table-column prop="source" label="渠道名称" align="center" />
+        <el-table-column prop="platformName" label="产品名称" align="center" />
+        <el-table-column prop="channelPrice" label="渠道价格" align="center" />
+        <el-table-column prop="platformPrice" label="产品价格" align="center" />
         <el-table-column prop="ctime" label="创建时间" align="center" />
         <el-table-column prop="result" label="结果" align="center" />
-        <el-table-column prop="source" label="渠道名" align="center" />
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -185,7 +185,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.queryInfo.current = val;
-      this.fetchData(); 
+      this.fetchData();
     },
     async openDialog() {
       this.dialogVisible = true
