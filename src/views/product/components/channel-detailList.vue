@@ -35,6 +35,25 @@
             </template>
           </template>
       </el-table-column>
+
+       <el-table-column prop="dayChannelLimit" label="日推送最大量" align="center">
+        <template slot-scope="scope">
+          <el-input-number
+            :disabled="!scope.row.switchFlag"
+            v-model="scope.row.dayChannelLimit"
+          ></el-input-number>
+          <el-button
+            size="small"
+            type="primary"
+            :disabled="!scope.row.switchFlag"
+            style="margin-left: 10px"
+            @click="updateSwitchChannelLimitById(scope.row.id, scope.row.dayChannelLimit)"
+          >
+            保存
+          </el-button>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="switchFlag" label="开/关" align="center">
         <template slot="header">
           <div
@@ -75,6 +94,9 @@ import {
   updateAllSwitchById
 } from '@/api/channel'
 
+import{
+  updateSwitchChannelLimitById
+} from '@/api/pushStatistics'
 export default {
   name: 'ChannelStatiscsByPushDialog',
   props: {
@@ -129,6 +151,13 @@ export default {
     }
   },
   methods: {
+      async updateSwitchChannelLimitById(id, dayChannelLimit) {
+      const res = await updateSwitchChannelLimitById(id, dayChannelLimit)
+      if (res.code === 200) {
+        this.$message.success('修改成功～')
+        this.getTableList()
+      }
+    },
     async changeSwitch(e, row) {
       console.log(e, row)
       let params = {
