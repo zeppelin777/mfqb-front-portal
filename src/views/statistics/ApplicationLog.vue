@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <el-card class="opt-box">
       <el-form inline>
-        <div class="form-row">
+<!--        <div class="form-row">-->
           <el-form-item label="手机号(MD5): ">
             <el-input
               v-model="queryInfo.md5Phone"
@@ -36,8 +36,8 @@
               ></el-option>
             </el-select>
           </el-form-item>
-        </div>
-        <div class="form-row">
+<!--        </div>-->
+<!--        <div class="form-row">-->
           <el-form-item label="创建时间：">
             <el-date-picker
               v-model="queryInfo.queryTime"
@@ -47,7 +47,7 @@
               end-placeholder="结束日期"
             ></el-date-picker>
           </el-form-item>
-          <div class="btn-group-right">
+<!--          <div class="btn-group-right">-->
             <el-form-item class="item-btn">
               <el-button
                 icon="el-icon-search"
@@ -68,8 +68,8 @@
                 导入
               </el-button>
             </el-form-item>
-          </div>
-        </div>
+<!--          </div>-->
+<!--        </div>-->
       </el-form>
     </el-card>
 
