@@ -5,6 +5,12 @@
       <el-table-column prop="platformName" label="平台名称" align="center" />
       <el-table-column prop="pushTotalNum" label="推送总数" align="center" />
       <el-table-column prop="successNum" label="成功数量" align="center" />
+      <!-- 新增件均价格列 -->
+      <el-table-column prop="avgPrice" label="件均价格" align="center">
+        <template slot-scope="scope">
+          <div>{{ calculateAvgPrice(scope.row) }}</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="failureNum" label="失败数量" align="center" />
       <el-table-column prop="successRate" label="成功率" align="center">
         <template slot-scope="scope">
@@ -71,6 +77,16 @@ export default {
     }
   },
   methods: {
+
+    // 新增计算件均价格的方法
+    calculateAvgPrice(row) {
+      if (!row.successNum || row.successNum === 0) {
+        return '0.00'
+      }
+      const avgPrice = (row.totalPrice || 0) / row.successNum
+      return avgPrice.toFixed(2)
+    },
+
     async getTableList() {
       console.log(this.$props);
       this.queryInfo.platformCode = this.$props.platformCode
