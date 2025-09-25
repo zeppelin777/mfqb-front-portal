@@ -117,6 +117,7 @@
         </el-button>
         <el-select
           class="plat-select"
+          filterable
           v-model="platformCode"
           slot="tip"
           clearable
