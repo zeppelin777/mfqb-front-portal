@@ -37,6 +37,9 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="产品名称：">
+            <el-input v-model="queryInfo.productName" placeholder="请输入渠道名称" clearable/>
+          </el-form-item>
           <el-form-item label="星级：">
             <el-select
               v-model="queryInfo.star"
@@ -221,6 +224,7 @@
           current: 1,
           size: 20,
           channelName: '',
+          productName: '',
           startTime: '',
           endTime: '',
           level: ''
