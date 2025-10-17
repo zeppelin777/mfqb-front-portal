@@ -12,7 +12,8 @@ const request = axios.create({
     // process.env.NODE_ENV === 'development'
     //   ? 'http://192.168.1.4:8092/xlqbadmin'
   // 'https://api.mfqb.cc/admin'
-       'http://localhost:8092/admin'
+  //      'http://localhost:8092/admin'
+  'http://8.133.3.57:18092/admin'
 })
 
 request.interceptors.request.use((config) => {
